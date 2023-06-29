@@ -1,0 +1,184 @@
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+
+// Component for listing users
+const ListUsers = () => {
+  const [users, setUsers] = useState([
+    { id: 1, name: 'John Doe', email: 'john@example.com' },
+    { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
+    { id: 3, name: 'Robert Johnson', email: 'robert@example.com' },
+  ]);
+
+  return (
+    <div>
+      <h2>List Users</h2>
+      <ul>
+        {users.map(user => (
+          <li key={user.id}>
+            <Link to={`/profile/${user.id}`}>{user.name}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+// Component for creating a new user
+const CreateUser = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    // Logic to create a new user
+    // ...
+
+    // Clear form fields
+    setName('');
+    setEmail('');
+  };
+
+  return (
+    <div>
+      <h2>Create User</h2>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={name} onChange={e => setName(e.target.value)} />
+        </label>
+        <br />
+        <label>
+          Email:
+          <input type="email" value={email} onChange={e => setEmail(e.target.value)} />
+        </label>
+        <br />
+        <button type="submit">Create</button>
+      </form>
+    </div>
+  );
+};
+
+// Component for editing a user
+const EditUser = ({ match }) => {
+  const userId = match.params.id;
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    // Logic to update the user with the specified userId
+    // ...
+
+    // Redirect to user profile page
+    // ...
+  };
+
+  return (
+    <div>
+      <h2>Edit User</h2>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={name} onChange={e => setName(e.target.value)} />
+        </label>
+        <br />
+        <label>
+          Email:
+          <input type="email" value={email} onChange={e => setEmail(e.target.value)} />
+        </label>
+        <br />
+        <button type="submit">Save</button>
+      </form>
+    </div>
+  );
+};
+
+// Component for user profile
+const UserProfile = ({ match }) => {
+  const userId = match.params.id;
+  const [user, setUser] = useState(null);
+
+  // Fetch user data based on the userId
+  // ...
+
+  return (
+    <div>
+      {user ? (
+        <div>
+          <h2>User Profile</h2>
+          <p>Name: {user.name}</p>
+          <p>Email: {user.email}</p>
+          <Link to={`/edit-profile/${userId}`}>Edit Profile</Link>
+        </div>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
+  );
+};
+
+// Component for editing user profile
+const EditProfile = ({ match }) => {
+  const userId = match.params.id;
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    // Logic to update the user profile with the specified userId
+    // ...
+
+    // Redirect to user profile page
+    // ...
+  };
+
+  return (
+    <div>
+      <h2>Edit Profile</h2>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={name} onChange={e => setName(e.target.value)} />
+        </label>
+        <br />
+        <label>
+          Email:
+          <input type="email" value={email} onChange={e => setEmail(e.target.value)} />
+        </label>
+        <br />
+        <button type="submit">Save</button>
+      </form>
+    </div>
+  );
+};
+
+// Main component for the dashboard
+const Dashboard = () => {
+  return (
+    <Router>
+      <div>
+        <h1>User Dashboard</h1>
+        <ul>
+          <li>
+            <Link to="/users">List Users</Link>
+          </li>
+          <li>
+            <Link to="/create-user">Create User</Link>
+          </li>
+        </ul>
+
+        <hr />
+
+        <Switch>
+          <Route path="/users" component={ListUsers} />
+          <Route path="/create-user" component={CreateUser} />
+          <Route path="/edit-user/:id" component={EditUser} />
+          <Route path="/profile/:id" component={UserProfile} />
+          <Route path="/edit-profile/:id" component={EditProfile} />
+        </Switch>
+      </div>
+    </Router>
+  );
+};
+
+export default Dashboard;
